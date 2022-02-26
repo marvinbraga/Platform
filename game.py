@@ -2,6 +2,7 @@ import pygame
 
 from core.artefacts import Artefact
 from core.background_manager import Background
+from core.enemy import Enemy
 from core.scene import Scene
 from hero import Hero
 
@@ -34,7 +35,7 @@ class Game(Scene):
         self.crystal2 = Artefact("assets/crystal.png", 870, 300, self.all_sprites, self.all_crystals)
         self.crystal3 = Artefact("assets/crystal.png", 1155, 300, self.all_sprites, self.all_crystals)
 
-        self.enemy1 = Artefact("assets//enemy0.png", 520, 502, self.all_sprites, self.all_enemies)
+        self.enemy1 = Enemy(520, 502, self.all_sprites, self.all_enemies)
         self.player = Hero("assets/idle0.png", 100, 250, self.all_sprites)
 
         self.hud = Artefact("assets/hud.png", 50, 50, self.all_sprites)

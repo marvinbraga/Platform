@@ -43,6 +43,9 @@ class AbstractGameLoop(metaclass=ABCMeta):
                     self.loop = False
                 if event.key in self._valid_keys:
                     self.check_keys(event)
+            elif event.type == pygame.KEYUP:
+                if event.key in self._valid_keys:
+                    self.check_keys(event)
             else:
                 self.check_events(event)
 

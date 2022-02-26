@@ -30,9 +30,9 @@ class Game(Scene):
         self.plat2 = Artefact("assets/plat3.png", 430, 550, self.all_sprites, self.all_platforms)
         self.plat3 = Artefact("assets/plat2.png", 1080, 550, self.all_sprites, self.all_platforms)
 
-        self.crystal1 = Artefact("assets/crystal.png", 520, 400, self.all_sprites, self.all_crystals)
-        self.crystal2 = Artefact("assets/crystal.png", 870, 400, self.all_sprites, self.all_crystals)
-        self.crystal3 = Artefact("assets/crystal.png", 1155, 400, self.all_sprites, self.all_crystals)
+        self.crystal1 = Artefact("assets/crystal.png", 520, 300, self.all_sprites, self.all_crystals)
+        self.crystal2 = Artefact("assets/crystal.png", 870, 300, self.all_sprites, self.all_crystals)
+        self.crystal3 = Artefact("assets/crystal.png", 1155, 300, self.all_sprites, self.all_crystals)
 
         self.enemy1 = Artefact("assets//enemy0.png", 520, 502, self.all_sprites, self.all_enemies)
         self.player = Hero("assets/idle0.png", 100, 250, self.all_sprites)
@@ -42,11 +42,29 @@ class Game(Scene):
     def update(self):
         super().update()
         self.check_platform()
+        self.check_crystal()
+        self.check_enemy()
 
     def check_platform(self):
         platform = self.player.is_collide(self.all_platforms, False)
         if platform:
             self.player.rect.bottom = platform[0].rect.top
+
+    def check_crystal(self):
+        crystal = self.player.is_collide(self.all_crystals, True)
+        if crystal:
+            self.player.points += 1
+
+    def check_enemy(self):
+        enemy = self.player.is_collide(self.all_enemies, False)
+        if enemy:
+            if self.player.rect.y + 90 < enemy[0].rect.top:
+                self.player.velocity *= -1
+                enemy[0].kill()
+            else:
+                self.player.rect[0] -= 16
+                enemy[0].kill()
+                self.player.power -= 1
 
     def check_events(self, event):
         self.player.check_events(event)

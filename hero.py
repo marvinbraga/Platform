@@ -14,16 +14,12 @@ class Hero(Artefact):
         self.velocity = 4
         self.gravity = 1
         self.right, self.left, self.jump = False, False, False
+        self.points = 0
+        self.power = 3
 
     def update(self, *args):
         self.move_by_gravity()
         self.move()
-
-    def move_by_gravity(self):
-        self.velocity += self.gravity
-        self.rect[1] += self.velocity
-        if self.velocity >= 10:
-            self.velocity = 10
 
     def is_collide(self, group, kill):
         return pygame.sprite.spritecollide(self, group, kill)
@@ -38,12 +34,18 @@ class Hero(Artefact):
             elif event.key == pygame.K_LEFT:
                 self.left = True
             elif event.key == pygame.K_SPACE:
-                self.velocity *= -1
+                self.velocity *= -1.5
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
                 self.right = False
             elif event.key == pygame.K_LEFT:
                 self.left = False
+
+    def move_by_gravity(self):
+        self.velocity += self.gravity
+        self.rect[1] += self.velocity
+        if self.velocity >= 10:
+            self.velocity = 10
 
     def move(self):
         if self.left:

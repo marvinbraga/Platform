@@ -49,9 +49,11 @@ class Hero(Artefact):
         if self.left:
             self.rect[0] -= 8
             self.animate("walk", 4, 3)
+            self.image = pygame.transform.flip(self.image, True, False)
         elif self.right:
             self.rect[0] += 8
             self.animate("walk", 4, 3)
+            self.image = pygame.transform.flip(self.image, False, False)
         else:
             self.animate("idle", 4, 3)
 

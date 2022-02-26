@@ -10,7 +10,12 @@ class Game(Scene):
 
     def __init__(self):
         super().__init__()
-        self.valid_keys = [pygame.K_LEFT, pygame.K_RIGHT]
+        self.valid_keys = [
+            pygame.K_LEFT,
+            pygame.K_RIGHT,
+            pygame.K_SPACE,
+        ]
+
         self.all_platforms = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
         self.all_crystals = pygame.sprite.Group()

@@ -35,6 +35,8 @@ class Hero(Artefact):
                 self.right = True
             elif event.key == pygame.K_LEFT:
                 self.left = True
+            elif event.key == pygame.K_SPACE:
+                self.velocity *= -1
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
                 self.right = False

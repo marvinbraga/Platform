@@ -9,6 +9,8 @@ class Hero(Artefact):
     def __init__(self, image, x, y, *groups: AbstractGroup):
         super().__init__(image, x, y, *groups)
 
+        self.index = 0
+        self.ticks = 0
         self.velocity = 4
         self.gravity = 1
         self.right, self.left, self.jump = False, False, False
@@ -46,5 +48,19 @@ class Hero(Artefact):
     def move(self):
         if self.left:
             self.rect[0] -= 8
+            self.animate("walk", 4, 3)
         elif self.right:
             self.rect[0] += 8
+            self.animate("walk", 4, 3)
+        else:
+            self.animate("idle", 4, 3)
+
+    def animate(self, name, ticks, limit):
+        self.ticks += 1
+        if self.ticks >= ticks:
+            self.ticks = 0
+            self.index += 1
+        if self.index > limit:
+            self.index = 0
+
+        self.image = pygame.image.load(f"assets/{name}{self.index}.png")

@@ -23,28 +23,38 @@ class Game(Scene):
 
         self.background = Background("assets/bg.png", 0, 0, self.all_sprites)
 
-        self.tree1 = Artefact("assets/tree1.png", 80, 250, self.all_sprites)
-        self.tree2 = Artefact("assets/tree2.png", 450, 250, self.all_sprites)
-        self.tree3 = Artefact("assets/tree1.png", 1060, 250, self.all_sprites)
+        Artefact("assets/tree1.png", 80, 250, self.all_sprites)
+        Artefact("assets/tree2.png", 450, 250, self.all_sprites)
+        Artefact("assets/tree1.png", 1060, 250, self.all_sprites)
 
-        self.plat1 = Artefact("assets/plat1.png", 50, 550, self.all_sprites, self.all_platforms)
-        self.plat2 = Artefact("assets/plat3.png", 430, 550, self.all_sprites, self.all_platforms)
-        self.plat3 = Artefact("assets/plat2.png", 1080, 550, self.all_sprites, self.all_platforms)
+        Artefact("assets/plat1.png", 50, 550, self.all_sprites, self.all_platforms)
+        Artefact("assets/plat3.png", 430, 550, self.all_sprites, self.all_platforms)
+        Artefact("assets/plat2.png", 1080, 550, self.all_sprites, self.all_platforms)
 
-        self.crystal1 = Artefact("assets/crystal.png", 520, 300, self.all_sprites, self.all_crystals)
-        self.crystal2 = Artefact("assets/crystal.png", 870, 300, self.all_sprites, self.all_crystals)
-        self.crystal3 = Artefact("assets/crystal.png", 1155, 300, self.all_sprites, self.all_crystals)
+        Artefact("assets/crystal.png", 520, 300, self.all_sprites, self.all_crystals)
+        Artefact("assets/crystal.png", 870, 300, self.all_sprites, self.all_crystals)
+        Artefact("assets/crystal.png", 1155, 300, self.all_sprites, self.all_crystals)
 
-        self.enemy1 = Enemy(520, 502, self.all_sprites, self.all_enemies)
+        Enemy(520, 502, self.all_sprites, self.all_enemies)
+        Enemy(800, 502, self.all_sprites, self.all_enemies)
+        Enemy(1100, 502, self.all_sprites, self.all_enemies)
+
         self.player = Hero("assets/idle0.png", 100, 250, self.all_sprites)
-
         self.hud = Artefact("assets/hud.png", 50, 50, self.all_sprites)
+
+        self.is_finished = False
 
     def update(self):
         super().update()
         self.check_platform()
         self.check_crystal()
         self.check_enemy()
+        self.check_is_finished()
+
+    def check_is_finished(self):
+        self.is_finished = self.player.power <= 0
+        if self.is_finished:
+            self.change_scene = True
 
     def check_platform(self):
         platform = self.player.is_collide(self.all_platforms, False)
@@ -55,6 +65,7 @@ class Game(Scene):
         crystal = self.player.is_collide(self.all_crystals, True)
         if crystal:
             self.player.points += 1
+            self.update_hud_crystals()
 
     def check_enemy(self):
         enemy = self.player.is_collide(self.all_enemies, False)
@@ -66,9 +77,18 @@ class Game(Scene):
                 self.player.rect[0] -= 16
                 enemy[0].kill()
                 self.player.power -= 1
+                self.update_hud_enemies()
 
     def check_events(self, event):
         self.player.check_events(event)
 
     def check_keys(self, event):
         self.player.check_keys(event)
+
+    def update_hud_crystals(self):
+        pos = [136, 160, 185]
+        Artefact("assets/icon_crystal.png", pos[self.player.points - 1], 126, self.all_sprites)
+
+    def update_hud_enemies(self):
+        pos = [216, 177, 140]
+        Artefact("assets/icon_head.png", pos[self.player.power], 81, self.all_sprites)

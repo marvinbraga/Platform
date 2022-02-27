@@ -12,6 +12,7 @@ class GameLoop(AbstractGameLoop):
     def draw(self):
         self.game.draw(self.window)
         self.game.update()
+        self.loop = not self.game.is_finished
 
     def check_keys(self, event):
         self.game.check_keys(event)

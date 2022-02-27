@@ -49,6 +49,7 @@ class Game(Scene):
         self.check_platform()
         self.check_crystal()
         self.check_enemy()
+        self.check_drop()
         self.check_is_finished()
 
     def check_is_finished(self):
@@ -59,7 +60,10 @@ class Game(Scene):
     def check_platform(self):
         platform = self.player.is_collide(self.all_platforms, False)
         if platform:
-            self.player.rect.bottom = platform[0].rect.top
+            if self.player.rect[1] + 50 < platform[0].rect.top:
+                if self.player.rect.left + 30 <= platform[0].rect.right:
+                    if self.player.rect.right - 30 >= platform[0].rect.left:
+                        self.player.rect.bottom = platform[0].rect.top
 
     def check_crystal(self):
         crystal = self.player.is_collide(self.all_crystals, True)
@@ -92,3 +96,10 @@ class Game(Scene):
     def update_hud_enemies(self):
         pos = [216, 177, 140]
         Artefact("assets/icon_head.png", pos[self.player.power], 81, self.all_sprites)
+
+    def check_drop(self):
+        if self.player.power > 0:
+            if self.player.rect.y > 720:
+                self.player.rect.x, self.player.rect.y = 100, 250
+                self.player.power -= 1
+                self.update_hud_enemies()
